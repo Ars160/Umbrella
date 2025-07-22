@@ -4,7 +4,6 @@ import { DragDropContext} from "@hello-pangea/dnd"
 const Board = ({tasks, setTasks}) => {
 
 const handleDragEnd = (result) => {
-    console.log(result);
     
     const {source, destination} = result
 
