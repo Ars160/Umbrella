@@ -1,22 +1,24 @@
 const express = require("express")
-const mongoose = require("mongoose")
+const connectDB = require("./config/db")
 const cors = require("cors")
 require("dotenv").config()
 
+const authRoutes = require("./router/authRoutes")
+const userRoutes = require("./router/userRoutes")
+const authMiddleware = require("./middlewares/authMiddleware")
+
 const app = express()
 
+connectDB()
 
 app.use(cors())
 app.use(express.json())
 
+app.use('/auth', authRoutes)
+app.use('/user', userRoutes)
 
-mongoose.connect(`${process.env.MONGO_URL}`)
-    .then(() => console.log("MongoDB is connected"))
-    .catch(() => console.log(err))
-
-
-app.get("/tes", (req,res) => {
-    res.json({message: 'Server is running'})
+app.get('/tes', authMiddleware, (req, res) => {
+    res.json("success")
 })
 
 
