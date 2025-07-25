@@ -1,7 +1,6 @@
 const User = require("../models/User")
 
 const profileUser = async (id) => {
-    console.log(id);
     
     const user = await User.findById(id).select("-password")
     if(!user) throw new Error("User not found")

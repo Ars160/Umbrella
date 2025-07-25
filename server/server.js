@@ -5,7 +5,7 @@ require("dotenv").config()
 
 const authRoutes = require("./router/authRoutes")
 const userRoutes = require("./router/userRoutes")
-const authMiddleware = require("./middlewares/authMiddleware")
+const projectRoutes = require("./router/projectRoutes")
 
 const app = express()
 
@@ -16,10 +16,7 @@ app.use(express.json())
 
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
-
-app.get('/tes', authMiddleware, (req, res) => {
-    res.json("success")
-})
+app.use('/project', projectRoutes)
 
 
 app.listen(process.env.PORT, () =>  
