@@ -13,6 +13,16 @@ const create = async (req, res) => {
     }
 }
 
+const getAll = async (req,res) => {
+    try {
+        const projects = await projectService.getProjects()
+        res.status(200).json(projects)
+    } catch (error) {
+        res.status(500).json({ error: error.message })        
+    }
+}
+
 module.exports = {
-    create
+    create,
+    getAll
 }

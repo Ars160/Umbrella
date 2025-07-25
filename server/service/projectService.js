@@ -9,6 +9,12 @@ const createProject = async ({name, description, creator}) => {
     return {success: true}
 }
 
+const getProjects = async () => {
+    const projects = await Project.find()
+    return projects
+}
+
 module.exports = {
-    createProject
+    createProject,
+    getProjects
     }

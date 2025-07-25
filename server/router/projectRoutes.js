@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.use(auth)
 
-router.get("/create", projectController.create)
+router.post("/create", projectController.create)
+router.get("/", projectController.getAll)
 
 module.exports = router 
