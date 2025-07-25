@@ -13,7 +13,7 @@ const create = async (req, res) => {
     }
 }
 
-const getAll = async (req,res) => {
+const getAll = async (req, res) => {
     try {
         const projects = await projectService.getProjects()
         res.status(200).json(projects)
@@ -22,7 +22,17 @@ const getAll = async (req,res) => {
     }
 }
 
+const getOne = async (req, res) => {
+    try {
+        const project = await projectService.getOneProject(req.params.id)
+        res.status(200).json(project)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     create,
-    getAll
+    getAll,
+    getOne
 }

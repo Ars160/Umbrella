@@ -14,7 +14,15 @@ const getProjects = async () => {
     return projects
 }
 
+const getOneProject = async (id) => {
+    const project = await Project.findById(id)
+    if(!project) throw new Error("this project is none")
+    
+    return project
+}
+
 module.exports = {
     createProject,
-    getProjects
+    getProjects,
+    getOneProject
     }

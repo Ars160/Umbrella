@@ -8,5 +8,7 @@ router.use(auth)
 
 router.post("/create", projectController.create)
 router.get("/", projectController.getAll)
+router.get("/:id", projectController.getOne)
+
 
 module.exports = router 
