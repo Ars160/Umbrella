@@ -41,7 +41,7 @@ const handleSubmit = async (e) => {
     if(!registeredUser.success){
         setError(registeredUser)
     }else{
-        navigate('/')
+        navigate('/login')
     }
 }
 
@@ -64,7 +64,7 @@ const handleSubmit = async (e) => {
             <button type='submit' className="btn btn-primary">Регистрация</button>
             <div className="mt-3">
                 <label>
-                    Уже есть аккаунт? <Link to='/'>Логин</Link>
+                    Уже есть аккаунт? <Link to='/login'>Логин</Link>
                 </label>
                 <p className='error'>{error}</p>
             </div>

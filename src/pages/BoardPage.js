@@ -2,14 +2,11 @@ import Board from '../components/Board'
 import { useState } from 'react';
 import { Modal, Button, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { profile } from '../api/user';
-import { useNavigate } from 'react-router-dom';
 
 const BoardPages = () => {
 
     const projects = ['Project A', 'Project B', 'Project C']
 
-    const navigate = useNavigate()
     
     const [tasks, setTasks] = useState({
     todo: [],
@@ -27,10 +24,6 @@ const BoardPages = () => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
 
-    const handleProfile = async () => {
-        const user = await profile()
-        navigate('/profile', {state: user.data})
-    }
 
     const handleCreateTask = () => {
         if(!title.trim() || !description.trim()) return
@@ -50,9 +43,6 @@ const BoardPages = () => {
         Создать 
         </Button>
 
-        <Button variant="secondary" onClick={handleProfile} className=' mt-3'>
-        Профиль
-        </Button>
         <hr/>
         
         <Board tasks={tasks} setTasks={setTasks}/>
