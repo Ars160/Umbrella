@@ -21,8 +21,24 @@ const getOneProject = async (id) => {
     return project
 }
 
+const updateProject = async (id, updates) => {
+    const newProject = await Project.findByIdAndUpdate(id, updates, { new: true });
+    if (!newProject) throw new Error( "Project not found" )
+
+    return newProject
+}
+
+const deleteProject = async (id) => {
+    const deleted = await Project.findByIdAndDelete(id)
+    if (!deleted) throw new Error("Product not found")
+    
+    return deleted
+}
+
 module.exports = {
     createProject,
     getProjects,
-    getOneProject
+    getOneProject,
+    updateProject,
+    deleteProject
     }

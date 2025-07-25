@@ -9,6 +9,7 @@ router.use(auth)
 router.post("/create", projectController.create)
 router.get("/", projectController.getAll)
 router.get("/:id", projectController.getOne)
-
+router.put("/:id", projectController.update)
+router.delete("/:id", projectController.deleted)
 
 module.exports = router 

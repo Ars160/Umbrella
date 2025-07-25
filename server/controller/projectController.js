@@ -31,8 +31,28 @@ const getOne = async (req, res) => {
     }
 }
 
+const update = async (req, res) => {
+    try {
+        const newProject = await projectService.updateProject(req.params.id, req.body)
+        res.status(200).json(newProject)
+    } catch (error) {
+        res.status(404).json({ error: error.message })
+    }
+}
+
+const deleted = async (req, res) => {
+    try {
+        const deletedProject = await projectService.deleteProject(req.params.id)
+        res.status(200).json(deletedProject)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     create,
     getAll,
-    getOne
+    getOne,
+    update,
+    deleted
 }
