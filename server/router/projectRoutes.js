@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.use(auth)
 
-router.post("/create", projectController.create)
+router.post("/", projectController.create)
 router.get("/", projectController.getAll)
 router.get("/:id", projectController.getOne)
 router.put("/:id", projectController.update)
