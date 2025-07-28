@@ -1,4 +1,6 @@
 const Project = require("../models/Project")
+const ProjectUser = require("../models/ProjectUser")
+const Task = require("../models/Task")
 
 const createProject = async ({name, description, creator}) => {
     const exsistingProject = await Project.findOne({name})
@@ -6,7 +8,13 @@ const createProject = async ({name, description, creator}) => {
 
     const project = await Project.create({name, description, creator})
 
-    return {success: true}
+    await ProjectUser.create({
+        user: creator,
+        project: project._id,
+        role: 'owner'
+      });
+
+    return {success: true, project}
 }
 
 const getProjects = async () => {
@@ -29,11 +37,17 @@ const updateProject = async (id, updates) => {
 }
 
 const deleteProject = async (id) => {
+    const project = await Project.findById(id)
+    if (!project) throw new Error("Project not found")
+
+    await Task.deleteMany({ project: id })    
+    await ProjectUser.deleteMany({ project: id })
+
     const deleted = await Project.findByIdAndDelete(id)
-    if (!deleted) throw new Error("Product not found")
-    
+
     return deleted
 }
+
 
 module.exports = {
     createProject,
