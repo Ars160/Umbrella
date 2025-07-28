@@ -9,4 +9,26 @@ const profile = async (req, res) => {
         } 
 } 
 
-module.exports = {profile}
+const getAll = async (req, res) => {
+    try {
+        const user = await userService.getUsers()
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({ error: error.message })        
+    }
+}
+
+const getOne = async (req, res) => {
+    try {
+        const user = await userService.getOneUser(req.params.id)
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+module.exports = {
+    profile,
+    getAll,
+    getOne
+}

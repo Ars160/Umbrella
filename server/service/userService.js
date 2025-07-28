@@ -8,4 +8,20 @@ const profileUser = async (id) => {
     return {id: user._id, name: user.name, email: user.email, role: user.role}
 }
 
-module.exports = {profileUser}
+const getUsers = async () => {
+    const user = await User.find()
+    return user
+}
+
+const getOneUser = async (id) => {
+    const user = await User.findById(id)
+    if(!user) throw new Error("this task is none")
+    
+    return user
+}
+
+module.exports = {
+    profileUser, 
+    getUsers,
+    getOneUser
+}

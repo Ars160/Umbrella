@@ -1,9 +1,11 @@
 import Column from "./Column"
 import { DragDropContext} from "@hello-pangea/dnd"
+import * as taskApi from "../api/task"
+
 
 const Board = ({tasks, setTasks}) => {
 
-const handleDragEnd = (result) => {
+const handleDragEnd = async (result) => {
     
     const {source, destination} = result
 
@@ -22,6 +24,12 @@ const handleDragEnd = (result) => {
           const start = Array.from(tasks[source.droppableId]);
           const finish = Array.from(tasks[destination.droppableId]);
           const [movedTask] = start.splice(source.index, 1);
+
+          const updatedTask = {
+            ...movedTask,
+            status: destination.droppableId,
+          };
+
           finish.splice(destination.index, 0, movedTask);
     
           setTasks((prev) => ({
@@ -29,6 +37,11 @@ const handleDragEnd = (result) => {
             [source.droppableId]: start,
             [destination.droppableId]: finish,
           }));
+
+          const res = await taskApi.update({...updatedTask, id: movedTask._id})
+          if (!res.success) {
+            alert("Ошибка при обновлении статуса на сервере");
+          }
         }
       };
 

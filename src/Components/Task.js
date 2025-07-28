@@ -1,8 +1,32 @@
 import { Draggable } from '@hello-pangea/dnd';
+import * as projectApi from "../api/project"
+import { useEffect, useState } from 'react';
+import * as userApi from "../api/user"
+
+
 
 const Task = ({task, index}) => {
+
+    const [projectName, setProjectName] = useState("")
+
+    const [user, setUser] = useState("")
+
+    useEffect(() => {
+      const project = async () => {
+        const res = await projectApi.getOne(task.project)
+        if(res.success) setProjectName(res.data.name)
+        else setProjectName("Неизвестно")
+
+        const resUser = await userApi.getOne(task.assignedTo)
+        if(resUser.success) setUser(resUser.data.name)
+          else setUser("Неизвестно")
+      }
+
+      project()
+    }, [task.project])
+
     return(
-        <Draggable draggableId={task.id} index={index}>
+        <Draggable draggableId={task._id} index={index}>
         {(provided) => (
           <div
             className="task"
@@ -22,7 +46,8 @@ const Task = ({task, index}) => {
             <div>
             <strong>{task.title}</strong>
             <p>{task.description}</p>
-            <span className="badge bg-info">{task.project}</span>
+            <span className="badge bg-info">{projectName}</span>
+            <span className="badge bg-info">{user}</span>
             </div>
           </div>
         )}

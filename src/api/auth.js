@@ -8,7 +8,6 @@ const API = axios.create({
 export const register = async (formData) => {
     try {
         const response = await API.post("/register", formData)
-        console.log(response);
         return {success: true, data: response.data}
     } catch (error) {
         console.error("Failed to register", error);
@@ -19,7 +18,6 @@ export const register = async (formData) => {
 export const login = async (formData) => {
     try {
         const response = await API.post("/login", formData)
-        console.log(response);
         return {success: true, data: response.data}
     } catch (error) {
         console.error("Failed to login", error);
