@@ -6,6 +6,9 @@ import RegisterPage from './pages/register';
 import Profile from './pages/profile';
 import Header from './components/Header';
 import NotFound from './pages/NotFound';
+import ProjectsPage from './pages/ProjectsPage';
+import EditProjectPage from './pages/EditProjectPage';
+
 
 
 function App() {
@@ -16,8 +19,18 @@ function App() {
       errorElement: < NotFound />,
       children: [
         { 
-          path: "dashboard/",
+          path: "project/:projectId",
           element: <BoardPage />
+        },
+
+        {
+          path: "projects/",
+          element: <ProjectsPage />
+        },
+
+        {
+          path: "projects/:id/edit",
+          element: <EditProjectPage />,
         },
 
         {

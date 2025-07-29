@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 
 const Profile = () => {
@@ -15,6 +15,8 @@ const Profile = () => {
             <p>Имя: {state?.name}</p>
             <p>Email: {state?.email}</p>
             <p>Роль: {state?.role}</p>
+
+            <Link to='/dashboard'><button className="btn btn-primary">Назад</button></Link>
         </>
     )
 }

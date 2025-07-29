@@ -37,9 +37,9 @@ export const getOne = async (id) => {
     }
 }
 
-export const update = async (project) => {
+export const update = async (id, project) => {
     try {
-        const response = await API.put(`/${project.id}`, project , authHeaders())
+        const response = await API.put(`/${id}`, project , authHeaders())
         return {success: true, data: response.data}
     } catch (error) {
         console.error("Failed to update this project", error);
