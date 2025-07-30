@@ -56,3 +56,4 @@ export const deleted = async (id) => {
         return {success: false, data: error}
     }
 }
+  

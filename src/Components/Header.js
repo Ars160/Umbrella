@@ -23,12 +23,12 @@ export default function Header() {
 
     const handleLogout = async () => {
         localStorage.clear()
-        navigate("/")
+        navigate("/login")
     }
     
     return(
         <>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+       <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#eeb110' }}>
         <div className="container-fluid">
             <Link className="navbar-brand" to="/">Umbrella</Link>
                 <div>
@@ -37,9 +37,9 @@ export default function Header() {
                     </Button>
                     {
                         hasToken ? (
-                            <button onClick={()=>{handleLogout()}} className="btn btn-primary">Выйти</button>
+                            <button onClick={()=>{handleLogout()}} className="btn">Выйти</button>
                         ):(
-                            <button onClick={()=>{navigate("/login")}} className="btn btn-primary">Логин</button>
+                            <button onClick={()=>{navigate("/login")}} className="btn mx-2">Логин</button>
                         )
                     }
                 </div>

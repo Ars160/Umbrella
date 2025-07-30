@@ -56,3 +56,14 @@ export const deleted = async (id) => {
         return {success: false, data: error}
     }
 }
+
+export const getByProjectId = async (projectId) => {
+    try {
+      const response = await API.get(`/project/${projectId}`, authHeaders());
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error("Failed to get tasks by projectId", error);
+      return { success: false, data: error };
+    }
+};  
+  

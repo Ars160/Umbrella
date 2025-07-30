@@ -34,10 +34,17 @@ const deleteTask = async (id) => {
     return deleted
 }
 
+const ByProjectId = async(projectId) => {
+    const tasks = await Task.find({project: projectId})
+
+    return tasks
+}
+
 module.exports = {
     createTask,
     getTasks,
     getOneTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    ByProjectId
 }

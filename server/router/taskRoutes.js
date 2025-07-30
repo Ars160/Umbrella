@@ -11,5 +11,6 @@ router.get("/", taskController.getAll)
 router.get("/:id", taskController.getOne)
 router.put("/:id", taskController.update)
 router.delete("/:id", taskController.deleted)
+router.get("/project/:projectId", taskController.getByProjectId)
 
 module.exports = router 

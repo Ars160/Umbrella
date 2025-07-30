@@ -1,21 +1,20 @@
 import { Draggable } from '@hello-pangea/dnd';
-import * as projectApi from "../api/project"
 import { useEffect, useState } from 'react';
 import * as userApi from "../api/user"
+import * as taskApi from "../api/task"
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Task = ({task, index}) => {
 
-    const [projectName, setProjectName] = useState("")
 
     const [user, setUser] = useState("")
+    const navigate = useNavigate()
+    
 
     useEffect(() => {
       const project = async () => {
-        const res = await projectApi.getOne(task.project)
-        if(res.success) setProjectName(res.data.name)
-        else setProjectName("Неизвестно")
 
         const resUser = await userApi.getOne(task.assignedTo)
         if(resUser.success) setUser(resUser.data.name)
@@ -23,7 +22,14 @@ const Task = ({task, index}) => {
       }
 
       project()
-    }, [task.project])
+    }, [])
+
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this entry?');
+        if (confirmDelete) {
+            await taskApi.deleted(id);
+        }
+    }
 
     return(
         <Draggable draggableId={task._id} index={index}>
@@ -46,8 +52,9 @@ const Task = ({task, index}) => {
             <div>
             <strong>{task.title}</strong>
             <p>{task.description}</p>
-            <span className="badge bg-info">{projectName}</span>
-            <span className="badge bg-info">{user}</span>
+            <span className="badge bg-info p-3">{user}</span>
+            <button onClick={() => navigate(`/task/${task._id}/edit`)} className='btn btn-primary mx-1'>Изменить</button>
+            <button onClick={() => {handleDelete(task._id)}} className='btn btn-danger mx-1'>Удалить</button>
             </div>
           </div>
         )}

@@ -42,33 +42,10 @@ const getOneProject = async (id) => {
     return project
 }
 
-const updateProject = async (id, name, description, members) => {
-    const newProject = await Project.findByIdAndUpdate(id, {name, description}, { new: true });
+const updateProject = async (id, name, description, assignedTo) => {
+    const newProject = await Project.findByIdAndUpdate(id, {name, description, assignedTo}, { new: true });
     if (!newProject) throw new Error( "Project not found" )
 
-      if (members) {
-        const project = await Project.findById(id);
-        const creatorId = project.creator.toString();
-
-        await ProjectUser.deleteMany({ 
-            project: id, 
-            role: 'member' 
-        });
-
-        const uniqueMembers = [...new Set(
-            members.filter(userId => userId !== creatorId)
-        )];
-
-        const memberUsers = uniqueMembers.map(userId => ({
-            user: userId,
-            project: id,
-            role: 'member'
-        }));
-
-        if (memberUsers.length > 0) {
-            await ProjectUser.insertMany(memberUsers);
-        }
-      }
     return newProject
 }
 

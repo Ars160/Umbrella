@@ -1,12 +1,11 @@
-import { Link, useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 
 const Profile = () => {
     
     const {state} = useLocation()
+    const navigate = useNavigate()
 
-    console.log(state);
-    
     
     return(
         <>
@@ -16,7 +15,7 @@ const Profile = () => {
             <p>Email: {state?.email}</p>
             <p>Роль: {state?.role}</p>
 
-            <Link to='/dashboard'><button className="btn btn-primary">Назад</button></Link>
+            <button onClick={() => navigate(-1)} className="btn btn-primary">Назад</button>
         </>
     )
 }

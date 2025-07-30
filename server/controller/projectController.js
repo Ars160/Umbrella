@@ -33,8 +33,8 @@ const getOne = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const {name, description, members} = req.body
-        const newProject = await projectService.updateProject(req.params.id, name, description, members)
+        const {name, description, assignedTo} = req.body
+        const newProject = await projectService.updateProject(req.params.id, name, description, assignedTo)
         res.status(200).json(newProject)
     } catch (error) {
         res.status(404).json({ error: error.message })

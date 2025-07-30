@@ -1,15 +1,19 @@
 import Board from '../components/Board'
-import * as projectApi from "../api/project"
 import * as taskApi from "../api/task"
 import * as userApi from "../api/user"
+import * as projectApi from "../api/project"
 import { useEffect, useState } from 'react';
 import { Modal, Button, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useParams } from 'react-router-dom';
 
 const BoardPages = () => {
 
-    const [projects, setProjects] = useState([])
+
+    const {projectId} = useParams() 
     const [users, setUsers] = useState([])
+    const [projectName, setProjectName] = useState() 
+    
 
     
     const [tasks, setTasks] = useState({
@@ -20,11 +24,10 @@ const BoardPages = () => {
 
     useEffect(() => {
         const Data = async () => {
-            const projectRes = await projectApi.getAll()
-            if(projectRes.success) setProjects(projectRes.data)
 
-            const taskRes = await taskApi.getAll()
+            const taskRes = await taskApi.getByProjectId(projectId)
             if(taskRes.success){
+                
                 const mappedTasks = {
                     todo: [],
                     inProgress: [],
@@ -38,17 +41,19 @@ const BoardPages = () => {
                 setTasks(mappedTasks)
             }
 
+            const project = await projectApi.getOne(projectId)
+            if(project.success) setProjectName(project.data.name)
+
             const userRes = await userApi.getAll()
             if (userRes.success) setUsers(userRes.data)
         }
         Data()
-    }, [])
+    }, [projectId])
 
 
     const [show, setShow] = useState(false)
     const [title, setTitle] = useState()
     const [description, setDescription] = useState()
-    const [project, setProject] = useState(null)
     const [assignedTo, setAssignedTo] = useState(null)
 
     
@@ -60,13 +65,10 @@ const BoardPages = () => {
     const handleCreateTask = async () => {
         if(!title.trim() || !description.trim()) return
 
-        const selectedProject = projects.find(p => p.name === project)
-        if(!selectedProject) return alert("Проект не найден")
-
         const newTask = {
             title,
             description,
-            project: selectedProject._id,
+            project: projectId,
             assignedTo 
         }
 
@@ -79,7 +81,6 @@ const BoardPages = () => {
             }))
             setTitle('')
             setDescription('')
-            setProject(projects[0]?.name || '')
             handleClose()
         } else {
             alert("Ошибка при создании")
@@ -88,14 +89,15 @@ const BoardPages = () => {
     } 
 
     return (
-        <> 
-        <Button variant="primary" onClick={handleShow} className='mt-3'>
-        Создать 
+        <>
+        <h2 className='mt-3 text-center'>{projectName}</h2>
+        <Button variant="primary" onClick={handleShow}>
+        Создать Задание
         </Button>
 
         <hr/>
         
-        <Board tasks={tasks} setTasks={setTasks}/>
+        <Board tasks={tasks} setTasks={setTasks} projectId={projectId}/>
 
                 <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -117,25 +119,6 @@ const BoardPages = () => {
                     >
                         <Form.Label>Описание</Form.Label>
                         <Form.Control as="textarea" rows={3} onChange={(e) => setDescription(e.target.value)}/>
-                    </Form.Group>
-
-                    <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlTextarea1"
-                    >
-                        <Form.Label>Выбор Проекта</Form.Label>
-                        <Form.Select
-                            value={project}
-                            onChange={(e) => setProject(e.target.value)}
-                        >
-                            <option value="">-- Выберите проект --</option>
-                            {projects.map((project) => (
-                                <option key={project._id} value={project.name}>
-                                    {project.name}
-                                </option>
-                            ))}
-                        </Form.Select>
-
                     </Form.Group>
 
                     <Form.Group className="mb-3">
