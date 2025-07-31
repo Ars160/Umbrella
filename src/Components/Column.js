@@ -2,30 +2,26 @@ import { Droppable } from '@hello-pangea/dnd'
 import Task from './Task'
 
 const Column = ({title, taskKey, tasks}) => {
-    return(
-        <Droppable droppableId={taskKey}>
+  return (
+    <Droppable droppableId={taskKey}>
       {(provided) => (
         <div
-          className="column"
           {...provided.droppableProps}
           ref={provided.innerRef}
-          style={{
-            backgroundColor: "#f8f9fa",
-            padding: "10px",
-            borderRadius: "8px",
-            flex: 1,
-            minHeight: "300px",
-          }}
+          className="bg-gray-100 p-4 rounded-lg flex-1 min-h-[300px] shadow-sm"
         >
-          <h2>{title}</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{title}</h2>
+  
           {tasks[taskKey].map((task, index) => (
             <Task key={task._id} task={task} index={index} />
           ))}
+  
           {provided.placeholder}
         </div>
       )}
     </Droppable>
-    )
+  );
+  
 }
 
 export default Column

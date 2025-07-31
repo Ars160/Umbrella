@@ -50,7 +50,7 @@ const handleDragEnd = async (result) => {
     
     return(
         <DragDropContext onDragEnd={handleDragEnd}>
-            <div style={{ display: "flex", gap: "20px" }}>
+            <div className="flex gap-5">
             <Column title={'To Do'} taskKey={'todo'} tasks={tasks} setTasks={setTasks}/>
             <Column title={'In Progress'} taskKey={'inProgress'} tasks={tasks} setTasks={setTasks}/>
             <Column title={'Done'} taskKey={'done'} tasks={tasks} setTasks={setTasks}/>

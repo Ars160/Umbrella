@@ -39,30 +39,62 @@ const LoginPage = () => {
         }
     }
     
-    return(
+    return (
         <>
-        <form onSubmit={handleSubmit} method="POST" className="container mt-5 border p-4 rounded" style={{width: 400}}>
-
-            <h2>Логин</h2>
-            <div className="mb-3">
-                <label htmlFor="email" className="form-label"> Почта </label>
-                <input type="email" name="email" className="form-control" id="email" onChange={handleEmail} />
+          <form 
+            onSubmit={handleSubmit} 
+            method="POST" 
+            className="w-full max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-md bg-white"
+          >
+            <h2 className="text-2xl font-semibold mb-6 text-center">Логин</h2>
+      
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Почта
+              </label>
+              <input 
+                type="email" 
+                name="email" 
+                id="email" 
+                onChange={handleEmail}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              />
             </div>
-
-            <div className="mb-3">
-                <label htmlFor="password" className="form-label"> Почта </label>
-                <input type="password" name="password" className="form-control" id="password" onChange={handlePassword} />
+      
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                Пароль
+              </label>
+              <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                onChange={handlePassword}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              />
             </div>
-            <button type="submit" className="btn btn-primary">Логин</button>
-            <div className="mt-3">
-                <label>
-                    Нет аккаунта? <Link to='/register'>Регистрация</Link>
-                </label>
-                <p className='error'>{error}</p>
+      
+            <button 
+              type="submit" 
+              className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+            >
+              Войти
+            </button>
+      
+            <div className="mt-4 text-center text-sm text-gray-600">
+              Нет аккаунта?{' '}
+              <Link to='/register' className="text-yellow-600 hover:underline">
+                Регистрация
+              </Link>
             </div>
-        </form>
+      
+            {error && (
+              <p className="mt-4 text-red-500 text-sm text-center">{error}</p>
+            )}
+          </form>
         </>
-    )
+      );
+      
 }
 
 export default LoginPage

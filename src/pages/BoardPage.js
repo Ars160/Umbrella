@@ -3,8 +3,6 @@ import * as taskApi from "../api/task"
 import * as userApi from "../api/user"
 import * as projectApi from "../api/project"
 import { useEffect, useState } from 'react';
-import { Modal, Button, Form} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams } from 'react-router-dom';
 
 const BoardPages = () => {
@@ -14,7 +12,7 @@ const BoardPages = () => {
     const [users, setUsers] = useState([])
     const [projectName, setProjectName] = useState() 
     
-
+    
     
     const [tasks, setTasks] = useState({
     todo: [],
@@ -90,66 +88,95 @@ const BoardPages = () => {
 
     return (
         <>
-        <h2 className='mt-3 text-center'>{projectName}</h2>
-        <Button variant="primary" onClick={handleShow}>
-        Создать Задание
-        </Button>
-
-        <hr/>
-        
-        <Board tasks={tasks} setTasks={setTasks} projectId={projectId}/>
-
-                <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Создать Заданию</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Называние</Form.Label>
-                        <Form.Control
-                        type="text"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlTextarea1"
+          <h2 className="mt-6 text-2xl font-semibold text-center">{projectName}</h2>
+      
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={handleShow}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-5 py-2 rounded-md"
+            >
+              Создать Задание
+            </button>
+          </div>
+      
+          <hr className="my-6 border-gray-300" />
+      
+          <Board tasks={tasks} setTasks={setTasks} projectId={projectId} />
+      
+          {show && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg relative">
+                <button
+                  onClick={handleClose}
+                  className="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-xl"
+                >
+                  &times;
+                </button>
+      
+                <h3 className="text-xl font-semibold mb-4">Создать Задание</h3>
+      
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Называние
+                    </label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={e => setTitle(e.target.value)}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    />
+                  </div>
+      
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Описание
+                    </label>
+                    <textarea
+                      rows={3}
+                      onChange={e => setDescription(e.target.value)}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    />
+                  </div>
+      
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Назначить на пользователя
+                    </label>
+                    <select
+                      value={assignedTo || ""}
+                      onChange={(e) => setAssignedTo(e.target.value)}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                     >
-                        <Form.Label>Описание</Form.Label>
-                        <Form.Control as="textarea" rows={3} onChange={(e) => setDescription(e.target.value)}/>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>Назначить на пользователя</Form.Label>
-                        <Form.Select
-                            value={assignedTo || ""}
-                            onChange={(e) => setAssignedTo(e.target.value)}
-                        >
-                            <option value="">-- Выберите исполнителя --</option>
-                            {users.map(user => (
-                                <option key={user._id} value={user._id}>
-                                    {user.name || user.email} {/* зависит от твоей схемы */}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    </Form.Group>
-
-                    
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                      <option value="">-- Выберите исполнителя --</option>
+                      {users.map(user => (
+                        <option key={user._id} value={user._id}>
+                          {user.name || user.email}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+      
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    onClick={handleClose}
+                    className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md"
+                  >
                     Отмена
-                    </Button>
-                    <Button variant="primary" onClick={handleCreateTask}>
+                  </button>
+                  <button
+                    onClick={handleCreateTask}
+                    className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md"
+                  >
                     Создать
-                    </Button>
-                </Modal.Footer>
-                </Modal>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
-    );
+      );
     }
 
 export default BoardPages;

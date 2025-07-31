@@ -32,33 +32,39 @@ const Task = ({task, index}) => {
     }
 
     return(
-        <Draggable draggableId={task._id} index={index}>
-        {(provided) => (
-          <div
-            className="task"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            style={{
-              userSelect: "none",
-              padding: "10px",
-              marginBottom: "10px",
-              backgroundColor: "#fff",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              ...provided.draggableProps.style,
-            }}
-          >
-            <div>
-            <strong>{task.title}</strong>
-            <p>{task.description}</p>
-            <span className="badge bg-info p-3">{user}</span>
-            <button onClick={() => navigate(`/task/${task._id}/edit`)} className='btn btn-primary mx-1'>Изменить</button>
-            <button onClick={() => {handleDelete(task._id)}} className='btn btn-danger mx-1'>Удалить</button>
+      <Draggable draggableId={task._id} index={index}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="bg-white border border-gray-300 rounded-md p-4 mb-3 shadow-sm"
+          style={{ ...provided.draggableProps.style }}
+        >
+          <div>
+            <h3 className="text-base font-semibold text-gray-800">{task.title}</h3>
+            <p className="text-sm text-gray-600 mb-2">{task.description}</p>
+            <span className="inline-block bg-blue-100 text-gray-600 text-xs font-medium px-3 py-1 rounded mb-3">
+              {user}
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => navigate(`/task/${task._id}/edit`)}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-3 py-1 rounded"
+              >
+                Изменить
+              </button>
+              <button
+                onClick={() => handleDelete(task._id)}
+                className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded"
+              >
+                Удалить
+              </button>
             </div>
           </div>
-        )}
-      </Draggable>
+        </div>
+      )}
+    </Draggable>
     )
 }
 
