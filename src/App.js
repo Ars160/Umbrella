@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound';
 import ProjectsPage from './pages/ProjectsPage';
 import EditProjectPage from './pages/EditProjectPage';
 import EditTaskPage from './pages/EditTaskPage';
+import TaskItem from './pages/TaskItem';
 
 
 
@@ -33,15 +34,22 @@ function App() {
           path: "projects/:id/edit",
           element: <EditProjectPage />,
         },
+        
         {
           path: "task/:taskId/edit",
           element: <EditTaskPage />,
         },
 
         {
+          path: "task/:taskId",
+          element: <TaskItem />
+        },
+
+        {
           path: "profile/",
           element: <Profile />
         }
+
       ]
     },
     {
