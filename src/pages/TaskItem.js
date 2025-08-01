@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import * as taskApi from "../api/task";
+import * as userApi from "../api/user";
 import { useParams } from "react-router-dom";
 
 const TaskItem = () => {
   const { taskId } = useParams();
   const [task, setTask] = useState(null);
+
+  const [userName, setUserName] = useState()
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -15,6 +18,19 @@ const TaskItem = () => {
     };
     fetchTask();
   }, [taskId]);
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (task?.assignedTo) {
+        const res2 = await userApi.getOne(task.assignedTo);
+        if (res2.success) {
+          setUserName(res2.data.name);
+        }
+      }
+    };
+    fetchUser();
+  }, [task]);
+  
 
   if (!task) {
     return <div className="text-center mt-10 text-gray-600">Загрузка задачи...</div>;
@@ -39,7 +55,8 @@ const TaskItem = () => {
       <div className="mb-4">
         <p className="text-gray-600 mb-1 font-medium">Исполнитель(и):</p>
         <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded">
-          {Array.isArray(task.assignedTo) ? task.assignedTo.join(", ") : task.assignedTo || "Не назначен"}
+          {/* {Array.isArray(task.assignedTo) ? task.assignedTo.join(", ") : task.assignedTo || "Не назначен"} */}
+          {userName}
         </span>
       </div>
 
