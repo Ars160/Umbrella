@@ -16,12 +16,14 @@ const EditProjectPage = () => {
 
 
 
+
     useEffect(() => {
         const Data = async () => {
         const res = await projectApi.getOne(params.id)
         if(res.success) {
             setName(res.data.name)
             setDescription(res.data.description)
+            
             setMembers(res.data.members?.map(m => m._id))
         }
 
@@ -54,11 +56,11 @@ const EditProjectPage = () => {
     return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg">
-            <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Редактировать проект</h2>
+            <div className="flex justify-between items-center border-b pb-3 mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">Редактировать проект</h2>
             <button
                 onClick={handleClose}
-                className="text-gray-500 hover:text-black text-xl"
+                className="text-gray-400 hover:text-red-500 text-2xl font-bold"
             >
             &times;
             </button>
@@ -67,7 +69,7 @@ const EditProjectPage = () => {
             <form className="space-y-5">
             {/* Название */}
             <div>
-                <label className="block font-medium text-gray-700 mb-1">Название</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Название</label>
                 <input
                 type="text"
                 value={name}
@@ -78,7 +80,7 @@ const EditProjectPage = () => {
 
             {/* Описание */}
             <div>
-                <label className="block font-medium text-gray-700 mb-1">Описание</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Описание</label>
                 <textarea
                 rows={3}
                 value={description}
@@ -89,23 +91,31 @@ const EditProjectPage = () => {
 
             {/* Участники */}
             <div>
-                <label className="block font-medium text-gray-700 mb-1">Участники</label>
-                <select
-                multiple
-                value={members}
-                onChange={(e) => {
-                    const values = Array.from(e.target.selectedOptions).map((o) => o.value);
-                    setMembers(values);
-                }}
-                className="w-full border border-gray-300 rounded px-3 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                >
-                {users.map((user) => (
-                    <option key={user._id} value={user._id}>
-                    {user.name}
-                    </option>
-                ))}
-                </select>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Участники проекта</label>
+            <div className="grid grid-cols-2 gap-2 border border-gray-300 rounded-md px-4 py-2">
+            {users
+                .filter(user => user.role !== "admin")
+                .map(user => (
+                <label key={user._id} className="flex items-center space-x-2">
+                    <input
+                    type="checkbox"
+                    value={user._id}
+                    checked={members.includes(user._id)}
+                    onChange={(e) => {
+                        const userId = e.target.value;
+                        if (members.includes(userId)) {
+                        setMembers(prev => prev.filter(id => id !== userId));
+                        } else {
+                        setMembers(prev => [...prev, userId]);
+                        }
+                    }}
+                    />
+                    <span>{user.name}</span>
+                </label>
+            ))}
             </div>
+            </div>
+
 
             {/* Сохранить */}
             <div className="mt-6 flex justify-end space-x-3">

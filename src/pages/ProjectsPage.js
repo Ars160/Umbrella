@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import * as projectApi from "../api/project"
 import { useNavigate } from "react-router-dom"
 import * as userApi from "../api/user"
+import  getUserRole  from "../utils/auth"
 
 
 
@@ -11,8 +12,6 @@ const ProjectsPage = () => {
     const [projects, setProjects] = useState([])
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [users, setUsers] = useState([])
-    
-
 
     const [name, setName] = useState()
     const [description, setDescription] = useState()
@@ -22,8 +21,9 @@ const ProjectsPage = () => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
 
-
     const navigate = useNavigate()
+
+    const role = getUserRole()
 
     useEffect(() => {
         const Data = async () => {
@@ -74,12 +74,12 @@ const ProjectsPage = () => {
     return (
       <>
         {/* Кнопка "Создать проект" */}
-        <button
+      { role === "admin" && (<button
           onClick={handleShow}
           className="mt-6 bg-yellow-500 text-white font-semibold px-5 py-2 rounded-lg hover:bg-yellow-600 transition"
         >
           Создать проект
-        </button>
+        </button>)}
     
         {/* Модальное окно */}
         {show && (
@@ -116,23 +116,31 @@ const ProjectsPage = () => {
                 </div>
     
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Участники проекта</label>
-                  <select
-                    multiple
-                    value={selectedUsers}
-                    onChange={(e) => {
-                      const selectedOptions = Array.from(e.target.selectedOptions).map(opt => opt.value);
-                      setSelectedUsers(selectedOptions);
-                    }}
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    {users.map(user => (
-                      <option key={user._id} value={user._id}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </select>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Участники проекта</label>
+                <div className="grid grid-cols-2 gap-2 border border-gray-300 rounded-md px-4 py-2">
+                  {users
+                    .filter(user => user.role !== "admin")
+                    .map(user => (
+                      <label key={user._id} className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          value={user._id}
+                          checked={selectedUsers.includes(user._id)}
+                          onChange={(e) => {
+                            const userId = e.target.value;
+                            if (selectedUsers.includes(userId)) {
+                              setSelectedUsers(prev => prev.filter(id => id !== userId));
+                            } else {
+                              setSelectedUsers(prev => [...prev, userId]);
+                            }
+                          }}
+                        />
+                        <span>{user.name}</span>
+                      </label>
+                  ))}
                 </div>
+              </div>
+
               </form>
     
               {/* Модальный футер */}
@@ -156,7 +164,7 @@ const ProjectsPage = () => {
     
         {/* Список проектов */}
         <div className="mt-10">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Список проектов</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Список проектов</h2>
           <ul className="space-y-4">
             {projects.map((project) => (
               <li
@@ -176,7 +184,8 @@ const ProjectsPage = () => {
                     >
                       Перейти →
                     </button>
-                    <button
+                    {role === "admin" && (<>
+                      <button
                       onClick={() => navigate(`/projects/${project._id}/edit`)}
                       className="bg-yellow-500 text-white text-sm px-4 py-2 rounded hover:bg-yellow-600"
                     >
@@ -187,7 +196,7 @@ const ProjectsPage = () => {
                       className="bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-red-700"
                     >
                       Удалить
-                    </button>
+                    </button></>)}
                   </div>
                 </div>
               </li>

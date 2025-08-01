@@ -38,15 +38,33 @@ const getProjects = async () => {
 const getOneProject = async (id) => {
     const project = await Project.findById(id)
     if(!project) throw new Error("this project is none")
+
+    const members = await ProjectUser.find({ project: id }).populate("user");
     
-    return project
+    return {
+      ...project.toObject(),
+      members: members.map(m => m.user)
+    }
 }
 
-const updateProject = async (id, name, description, assignedTo) => {
-    const newProject = await Project.findByIdAndUpdate(id, {name, description, assignedTo}, { new: true });
-    if (!newProject) throw new Error( "Project not found" )
+const updateProject = async (id, name, description, members) => {
+    const updatedProject = await Project.findByIdAndUpdate(id, {name, description}, { new: true });
+    if (!updatedProject) throw new Error( "Project not found" )
 
-    return newProject
+      await ProjectUser.deleteMany({ project: id });
+
+      const projectUsers = members.map(userId => ({
+        user: userId,
+        project: id,
+        role: 'member'
+      }));
+
+      await ProjectUser.insertMany(projectUsers);
+
+    return {
+      ...updatedProject.toObject(),
+      members
+    }
 }
 
 const deleteProject = async (id) => {

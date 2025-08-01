@@ -63,11 +63,11 @@ const EditTaskPage = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                   <div className="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg">
                     {/* Header */}
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-xl font-bold">Обновить Задачу</h2>
+                    <div className="flex justify-between items-center border-b pb-3 mb-4">
+                      <h2 className="text-2xl font-bold text-gray-800">Обновить Задачу</h2>
                       <button
                         onClick={handleClose}
-                        className="text-gray-500 hover:text-black text-xl"
+                        className="text-gray-400 hover:text-red-500 text-2xl font-bold"
                       >
                         &times;
                       </button>
@@ -77,7 +77,7 @@ const EditTaskPage = () => {
                     <form className="space-y-4">
                       {/* Название */}
                       <div>
-                        <label className="block font-medium mb-1">Название</label>
+                        <label className="block text-sm font-medium mb-1">Название</label>
                         <input
                           type="text"
                           value={title}
@@ -88,7 +88,7 @@ const EditTaskPage = () => {
           
                       {/* Описание */}
                       <div>
-                        <label className="block font-medium mb-1">Описание</label>
+                        <label className="block text-sm font-medium mb-1">Описание</label>
                         <textarea
                           rows={3}
                           value={description}
@@ -99,7 +99,7 @@ const EditTaskPage = () => {
           
                       {/* Назначить участника */}
                       <div>
-                        <label className="block font-medium mb-1">Назначить участника</label>
+                        <label className="block text-sm font-medium mb-1">Назначить участника</label>
                         <select
                           value={assignedTo || ""}
                           onChange={(e) => setAssignedTo(e.target.value)}

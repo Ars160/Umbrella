@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import * as userApi from "../api/user"
 import * as taskApi from "../api/task"
 import { useNavigate } from 'react-router-dom';
+import getUserRole from '../utils/auth';
 
 
 
@@ -11,6 +12,8 @@ const Task = ({task, index}) => {
 
     const [user, setUser] = useState("")
     const navigate = useNavigate()
+
+    const role = getUserRole()
     
 
     useEffect(() => {
@@ -57,7 +60,7 @@ const Task = ({task, index}) => {
                 >
                 Перейти →
               </button>
-              <button
+              {role === "admin" && (<><button
                 onClick={() => navigate(`/task/${task._id}/edit`)}
                 className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-3 py-1 rounded"
               >
@@ -68,7 +71,7 @@ const Task = ({task, index}) => {
                 className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded"
               >
                 Удалить
-              </button>
+              </button></>)}
             </div>
           </div>
         </div>

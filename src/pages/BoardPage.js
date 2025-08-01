@@ -4,6 +4,7 @@ import * as userApi from "../api/user"
 import * as projectApi from "../api/project"
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import getUserRole from '../utils/auth';
 
 const BoardPages = () => {
 
@@ -12,7 +13,7 @@ const BoardPages = () => {
     const [users, setUsers] = useState([])
     const [projectName, setProjectName] = useState() 
     
-    
+    const role = getUserRole()
     
     const [tasks, setTasks] = useState({
     todo: [],
@@ -90,14 +91,14 @@ const BoardPages = () => {
         <>
           <h2 className="mt-6 text-2xl font-semibold text-center">{projectName}</h2>
       
-          <div className="flex justify-center mt-4">
+          { role === "admin" && (<div className="flex justify-center mt-4">
             <button
               onClick={handleShow}
               className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-5 py-2 rounded-md"
             >
               Создать Задание
             </button>
-          </div>
+          </div>)}
       
           <hr className="my-6 border-gray-300" />
       
