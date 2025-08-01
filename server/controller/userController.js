@@ -1,3 +1,4 @@
+const { json } = require('express')
 const userService = require('../service/userService')
 
 const profile = async (req, res) => {
@@ -27,8 +28,35 @@ const getOne = async (req, res) => {
     }
 }
 
+const update = async (req, res) => {
+    try {
+        const newUser = await userService.updateProfile(req.params.id, req.body)
+        res.status(200).json(newUser)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+const changePw = async (req, res) => {
+    try {
+      const { currentPassword, newPassword } = req.body
+  
+      if (currentPassword === newPassword) {
+        return res.status(400).json({ message: "New password must be different from current password" })
+      }
+  
+      const updatedUser = await userService.changePassword(req.params.id, currentPassword, newPassword)
+      res.status(200).json({ message: "Password changed successfully", user: updatedUser })
+    } catch (error) {
+      res.status(400).json({ error: error.message })
+    }
+  }
+  
+
 module.exports = {
     profile,
     getAll,
-    getOne
+    getOne,
+    update,
+    changePw
 }

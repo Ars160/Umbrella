@@ -1,5 +1,4 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { profile } from "../api/user";
 import { useEffect, useState } from "react";
 
 
@@ -15,10 +14,9 @@ export default function Header() {
 
     const navigate = useNavigate();
 
-    const handleProfile = async () => {
-            const user = await profile()
-            if(user.success){
-              navigate('/profile', {state: user.data})
+    const handleProfile = () => {
+            if(localStorage.getItem("token")){
+              navigate('/profile')
             } else{
               navigate('/login')
             }

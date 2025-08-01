@@ -36,3 +36,24 @@ export const getOne = async (id) => {
         return {success: false, data: error}
     }
 }
+
+export const update = async (user) => {
+    try {
+        const response = await API.put(`/${user.id}`, user , authHeaders())
+        return {success: true, data: response.data}
+    } catch (error) {
+        console.error("Failed to update profile", error);
+        return {success: false, data: error}
+        
+    }
+}
+
+export const changePassword = async ({id, currentPassword, newPassword}) => {
+    try {
+        const res = await API.put(`/changePassword/${id}`, {currentPassword, newPassword}, authHeaders())
+        return {success: true, data: res.data}
+    } catch (error) {
+        console.error("Failed to change password");
+        return {success: false, data: error}
+    }
+}

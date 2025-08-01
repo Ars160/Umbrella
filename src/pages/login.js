@@ -33,6 +33,7 @@ const LoginPage = () => {
         const loginnedUser = await login(formData)
         if(loginnedUser.success){
             localStorage.setItem("token", JSON.stringify(loginnedUser.data.token))
+            localStorage.setItem("userId", loginnedUser.data.id)
             navigate('/projects')
         }else{
             setError("Неправильный логин или пароль!");
